@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Rubik' 
+    rel='text'>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recibos</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+</head>
+<body>
+    
+    <h1 class="titulo">Recibos</h1>
+    <hr>
+<div class="container">
+    <div id="formulario" class="child">
+        <form>
+            <label class="descritivo" for="nome">Nome</label>
+            <input class="descritivo" type="text" maxlength="40" name="nome" id="nome">
+            <label class="descritivo" for="cpf">CPF</label>
+            <input class="descritivo" type="text" name="cpf" id="cpf">
+            <br>
+            <label class="descritivo" for="nsessoes">Número de sessões</label>
+            <select class="descritivo" name="nsessoes" id="nsessoes">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <label class="descritivo" for="tipo">Tipo</label>
+            <select class="descritivo" name="tipo" id="tipo">
+                <option value="fisioterapia">fisioterapia</option>
+                <option value="RPG">RPG</option>
+            </select>
+            <br>
+            <label class="descritivo" for="valor">Valor R$</label>
+            
+            <input class="descritivo" type="number" step="0.01" name="valor" id="valor">
+            <br>
+            <div class="data_conduta">
+             <div class="filho"></div>
+                Data das Sessões:
+                <br>
+                <textarea class='descritivo' name="dsessoes" id="dsessoes" rows="10" cols="30"></textarea>
+            </div>
+            <div class="filho">
+                <p>Condutas realizadas:</p>
+                <textarea class='descritivo' name="condutas" id="condutas" rows="10" cols="30"></textarea>
+            </div>
+               
+        
+        <br>
+            <label class="descritivo" for="data">Data do Recibo</label>
+            <input class="descritivo" type="date" name="data" id="data" 
+            placeholder="dd-mm-yyyy" value=""
+            min="1997-01-01" max="2030-12-31">
+          <br>
+            <button onclick="gerarRecibo()" type="button" class="descritivo"  id="salvar" 
+            style="background-color: #F15928; color: #ffffff";>Gerar</button> 
+            <button onclick="window.print()" type="button" class="descritivo"  id="imprimir" 
+            style="background-color: #F15928; color: #ffffff";>Imprimir</button> 
+
+        </div>
+        </form>
+    </div>
+    
+    <div id="recibo" class="print">
+        <img src="R3.png" alt="Logo Riscienza" style="width:100px;height:56px; float: right; margin-left: 0px ;">
+        <p style="font-size: 3ch; text-align: center;">Recibo</p>
+        <p>Recebi de <span id="recibo_nome"></span>, CPF <span id="recibo_cpf"></span> a quantia de <span id="recibo_valor"></span></p>
+        <br>
+        referente a <span id="recibo_nsessoes"></span> sessão/sessões de <span id="recibo_tipo"></span>.
+        <br><br>
+        Data das sessões:
+        <br>
+        <pre><span id="recibo_dsessoes"></span></pre>
+        Condutas realizadas:
+        <br>
+        <pre><span id="recibo_condutas"></span></pre>
+        <p>São Paulo, <span id="recibo_dia"></span> de <span id="recibo_mes"></span> de 
+            <span id="recibo_ano"></span></p>
+        <br><br>
+        <div class="assinatura">
+            <br>
+            nome do fisioterapeuta
+            <br>
+            CREFITO/3 numero do crefito
+            <br>
+            CPF: numero do CPF
+            <br>
+        </div>
+
+        <script>
+            $(document).ready(function () { 
+                $('#cpf').mask('000.000.000-00', {reverse: true});
+            });
+
+            function gerarRecibo(){
+                document.getElementById('recibo_nome').innerHTML= document.getElementById('nome').value;
+                document.getElementById('recibo_cpf').innerHTML= document.getElementById('cpf').value;
+                document.getElementById('recibo_nsessoes').innerHTML= document.getElementById('nsessoes').value;
+                const d = new Date(document.getElementById("data").value) ;
+                const day = d.getDate() + 1;
+                const ano = d.getFullYear();
+                const mesMap = {0:"janeiro",1: "fevereiro",2:"março", 3:"abril",4:"maio",5:"junho",
+                6:"julho",7:"agosto",8:"setembro",9:"outubro",10:"novembro",11:"dezembro"};
+                const mes = mesMap[d.getMonth()];
+                const moeda = document.getElementById('valor').value;
+                let BRASILREAL =new Intl.NumberFormat('pt-br',{style:'currency', currency:'BRL'});
+                document.getElementById('recibo_dia').innerHTML= day;
+                document.getElementById('recibo_mes').innerHTML= mes;
+                document.getElementById('recibo_ano').innerHTML= ano;
+                document.getElementById('recibo_tipo').innerHTML= document.getElementById('tipo').value;
+                document.getElementById('recibo_valor').innerHTML= BRASILREAL.format(moeda);
+                document.getElementById('recibo_condutas').innerHTML= document.getElementById('condutas').value;
+                document.getElementById('recibo_dsessoes').innerHTML= document.getElementById('dsessoes').value;
+            }
+        </script>
+</div>
+</body>
+</html>
